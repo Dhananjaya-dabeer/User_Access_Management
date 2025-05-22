@@ -2,7 +2,11 @@
 
 A full-stack application for managing software access requests with role-based permissions (Admin, Manager, Employee).
 
-![System Overview](https://i.imgur.com/JKvQ8aH.png)
+👤 Demo User Credentials:
+
+Admin: username: abcd | password: 123
+
+Employee: username: John | password: 123
 
 ## ✨ Features
 
