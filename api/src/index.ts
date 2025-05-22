@@ -9,7 +9,7 @@ import authRouter from "./router/auth.router";
 import { Request, Response, NextFunction } from "express";
 import { customError } from "./utils/errorHandler";
 import softwareRouter from "../src/router/software.route";
-
+import requestRouter from "../src/router/request.router";
 const app = express();
 app.use(express.json());
 (async () => {
@@ -38,6 +38,7 @@ app.use(
 app.use("/api/health", healthRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/software", softwareRouter);
+app.use("/api/requests", requestRouter);
 
 app.use(
   (error: customError, req: Request, res: Response, next: NextFunction) => {

@@ -71,3 +71,40 @@ export const softwareScreening = (
   }
   next();
 };
+
+export const createRequestScreening = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (isBodyUndefined(req))
+    return next(errorHandler(400, "All fields are required"));
+  const { softwareId, accessType, reason } = req.body;
+  const missingFields = [];
+  if (!softwareId) missingFields.push("software id");
+  if (!accessType) missingFields.push("accessType");
+  if (reason) missingFields.push("reason");
+
+  if (missingFields.length > 0)
+    return next(errorHandler(400, "Missing Required fields", missingFields));
+  next();
+};
+export const updateRequestsScreening = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (isBodyUndefined(req))
+    return next(errorHandler(400, "All fields are required"));
+  if (req.params === undefined)
+    return next(errorHandler(400, "id is required"));
+  const { id } = req.params;
+  const { status } = req.body;
+  const missingFields = [];
+  if (!id) missingFields.push("id");
+  if (!status) missingFields.push("status");
+
+  if (missingFields.length > 0)
+    return next(errorHandler(400, "Missing Required fields", missingFields));
+  next();
+};

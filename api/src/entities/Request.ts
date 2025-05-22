@@ -5,9 +5,9 @@ import { Software } from "../entities/Software";
 export class Request {
   @PrimaryGeneratedColumn()
   id: number;
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { eager: true })
   user: User;
-  @ManyToOne(() => Software)
+  @ManyToOne(() => Software, { eager: true })
   software: Software;
   @Column()
   accessType: "Read" | "Write" | "Admin";
