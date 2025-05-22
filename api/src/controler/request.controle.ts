@@ -50,8 +50,17 @@ export const pendingRequest = async (req: ExpressRequest, res: Response) => {
     where: { status: "Pending" },
     relations: ["user", "software"],
   });
+  const formatted = pendingRequests.map((request) => ({
+    id: request.id,
+    user: { id: request.user.id, username: request.user.username },
+    software: { id: request.software.id, name: request.software.name },
+    accessType: request.accessType,
+    reason: request.reason,
+    status: request.status,
+  }));
   res.status(200).json({
-    pendingRequests,
+    sucssess: true,
+    data: formatted,
   });
 };
 
@@ -62,15 +71,25 @@ export const getMyRequests = async (
 ) => {
   const requestRepo = AppDataSource.getRepository(AccessRequest);
 
-  const request = await requestRepo.find({
+  const requests = await requestRepo.find({
     where: {
       user: { id: req.user?.id },
     },
     relations: ["software"],
+    order: { id: "DESC" },
   });
 
+  const formatted = requests.map((request) => ({
+    id: request.id,
+    software: { id: request.software.id, name: request.software.name },
+    accessType: request.accessType,
+    reason: request.reason,
+    status: request.status,
+  }));
+
   res.status(200).json({
-    request,
+    success: true,
+    data: formatted,
   });
 };
 
@@ -95,8 +114,8 @@ export const updateRequest = async (
 
   accessRequest.status = status as "Approved" | "Rejected";
   await requestRepo.save(accessRequest);
-
   res.status(200).json({
-    message: `Request ${status.toLowercase()}`,
+    success: true,
+    message: `Request ${status}`,
   });
 };

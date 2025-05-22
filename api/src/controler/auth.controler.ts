@@ -38,15 +38,15 @@ export const login = async (
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch)
     return next(errorHandler(404, "Either Username or Password is worong!"));
-  const { password: hashedPassword, id, ...rest } = user;
+  const { password: hashedPassword, ...rest } = user;
   const token = jwt.sign({ ...rest }, process.env.JWT_SECRET as string, {
-    expiresIn: "1min",
+    expiresIn: "1d",
   });
   res.cookie("access_token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    expires: new Date(Date.now() + 15 * 60 * 1000),
+    expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     path: "/",
     domain:
       process.env.NODE_ENV === "production"
@@ -60,4 +60,28 @@ export const login = async (
       ...rest,
     },
   });
+};
+export const logout = (req: Request, res: Response) => {
+  res.clearCookie("access_token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    expires: new Date(Date.now() + 15 * 60 * 1000),
+    path: "/",
+    domain:
+      process.env.NODE_ENV === "production"
+        ? process.env.PROD_DOMAIN
+        : undefined,
+  });
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+};
+export const getMe = (req: Request, res: Response, next: NextFunction) => {
+  const user = req.user;
+  if (!user) {
+    return next(errorHandler(401, "Not authenticated!"));
+  }
+  res.status(200).json(user);
 };

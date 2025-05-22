@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import AuthProvider from "./context/AuthProvider";
+import LoginPage from "./pages/LoginPage";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { Bounce, Flip, ToastContainer } from "react-toastify";
+import SignupPage from "./pages/SignupPage";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import RequestAccess from "./components/RequestAccess";
+import MyRequests from "./components/MyRequests";
+import PendingRequests from "./components/PendingRequest";
+import CreateSoftware from "./components/CreateSoftware";
+function AppContent() {
+  const location = useLocation();
+  const hideNavbarPaths = ["/login", "/signup"];
 
-function App() {
-  const [count, setCount] = useState(0)
-
+  const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {shouldShowNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/request-access" element={<RequestAccess />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/my-requests" element={<MyRequests />} />
+        <Route path="/pending-requests" element={<PendingRequests />} />
+        <Route path="/create-software" element={<CreateSoftware />} />
+      </Routes>
     </>
-  )
+  );
 }
-
-export default App
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Flip}
+      />
+    </AuthProvider>
+  );
+}
+export default App;

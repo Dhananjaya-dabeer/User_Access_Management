@@ -49,4 +49,9 @@ export const getAvailableSoftware = async (req: Request, res: Response) => {
       requestStatus: userRequest?.status ?? null,
     };
   });
+  console.log(result);
+  res.json({
+    success: true,
+    data: result,
+  });
 };

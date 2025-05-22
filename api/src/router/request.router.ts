@@ -12,6 +12,6 @@ const route = express.Router();
 route.post("/", verifyjwt, createRequest);
 route.get("/pending", verifyjwt, isManagerOrAdmin, pendingRequest);
 route.get("/mine", verifyjwt, getMyRequests);
-route.post("/:id", verifyjwt, isManagerOrAdmin, updateRequest);
+route.patch("/:id", verifyjwt, isManagerOrAdmin, updateRequest);
 
 export default route;

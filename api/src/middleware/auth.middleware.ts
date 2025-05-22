@@ -6,6 +6,7 @@ declare module "express" {
     user?: {
       id: number;
       role: "Employee" | "Manager" | "Admin";
+      name: string;
     };
   }
 }
@@ -20,11 +21,14 @@ export const verifyjwt = (req: Request, res: Response, next: NextFunction) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
       id: number;
-      role: "string";
+      role: string;
+      username: string;
     };
+
     req.user = {
       id: decoded.id,
       role: decoded.role as "Employee" | "Manager" | "Admin",
+      name: decoded.username,
     };
     next();
   } catch (error) {
