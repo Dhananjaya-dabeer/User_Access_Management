@@ -8,8 +8,8 @@ import healthRouter from "./router/health.router";
 import authRouter from "./router/auth.router";
 import { Request, Response, NextFunction } from "express";
 import { customError } from "./utils/errorHandler";
-import softwareRouter from "../src/router/software.route";
-import requestRouter from "../src/router/request.router";
+import softwareRouter from "./router/software.route";
+import requestRouter from "./router/request.router";
 const app = express();
 app.use(express.json());
 (async () => {
