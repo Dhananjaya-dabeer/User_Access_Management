@@ -49,9 +49,7 @@ export const login = async (
     expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     path: "/",
     domain:
-      process.env.NODE_ENV === "production"
-        ? process.env.PROD_DOMAIN
-        : undefined,
+      process.env.NODE_ENV === "production" ? process.env.DOMAIN : undefined,
   });
   res.status(200).json({
     success: true,
