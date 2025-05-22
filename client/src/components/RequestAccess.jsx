@@ -20,13 +20,16 @@ const RequestAccess = () => {
 
   const handleRequest = async (softwareId) => {
     const udpatedSoftwareState = softwares.map((item) => {
-      return {
-        ...item,
-        isPending: "false",
-        requestStatus: "Pending",
-      };
+      if (softwareId === item.id) {
+        return {
+          ...item,
+          isPending: "true",
+          requestStatus: "Pending",
+        };
+      } else {
+        return item;
+      }
     });
-    console.log(udpatedSoftwareState);
 
     try {
       await axios.post("/requests", {
@@ -66,7 +69,10 @@ const RequestAccess = () => {
             {!software.accessGranted && (
               <button
                 onClick={() => handleRequest(software.id)}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 ${
+                  software.requestStatus && "opacity-25"
+                }`}
+                disabled={software.requestStatus !== null}
               >
                 {software.requestStatus
                   ? software.requestStatus

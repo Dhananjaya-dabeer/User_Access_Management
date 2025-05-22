@@ -9,7 +9,7 @@ const PendingRequests = () => {
     const fetchRequests = async () => {
       try {
         const res = await axios.get("/requests/pending");
-        console.log(res);
+
         setRequests(res.data.data);
       } catch (err) {
         errorToaster(err);
